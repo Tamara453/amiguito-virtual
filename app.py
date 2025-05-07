@@ -1,10 +1,9 @@
 
-
-
 import streamlit as st
 import random
 from gtts import gTTS
-import os
+import base64
+from io import BytesIO
 
 st.set_page_config(page_title="Amiguito Virtual", layout="centered")
 
@@ -18,29 +17,21 @@ respuestas = {
     "despedida": ["¡Hasta pronto! 👋", "¡Un abrazo gigante! 🧸💖"]
 }
 
-def hablar(texto):
+def generar_audio(texto):
     tts = gTTS(text=texto, lang='es')
-    tts.save("voz.mp3")
-    os.system("start voz.mp3" if os.name == "nt" else "mpg123 voz.mp3")
+    audio_bytes = BytesIO()
+    tts.write_to_fp(audio_bytes)
+    audio_bytes.seek(0)
+    audio_b64 = base64.b64encode(audio_bytes.read()).decode()
+    audio_html = f'<audio controls autoplay><source src="data:audio/mp3;base64,{audio_b64}" type="audio/mp3"></audio>'
+    return audio_html
 
 col1, col2, col3, col4 = st.columns(4)
 
 if col1.button("👋 Hola"):
     mensaje = random.choice(respuestas["saludo"])
     st.success(mensaje)
-    hablar(mensaje)
+    st.markdown(generar_audio(mensaje), unsafe_allow_html=True)
 
 if col2.button("😂 Chiste"):
-    mensaje = random.choice(respuestas["chiste"])
-    st.info(mensaje)
-    hablar(mensaje)
 
-if col3.button("🔢 Contar"):
-    mensaje = random.choice(respuestas["contar"])
-    st.warning(mensaje)
-    hablar(mensaje)
-
-if col4.button("👋 Adiós"):
-    mensaje = random.choice(respuestas["despedida"])
-    st.error(mensaje)
-    hablar(mensaje)
