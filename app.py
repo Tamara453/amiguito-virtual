@@ -1,22 +1,26 @@
 
 import streamlit as st
-from transformers import pipeline
+import random
 
 st.set_page_config(page_title="Amiguito Virtual", layout="centered")
 
 st.title("🤖 Amiguito Virtual")
-st.markdown("¡Hola! Soy tu amiguito virtual. ¿Quieres jugar o hablar un ratito? 😊")
+st.markdown("¡Hola Valentina y Luca! 👧🧒\n\n¿Quieren jugar, cantar o charlar conmigo?")
 
-# Inicializar modelo solo una vez
-@st.cache_resource
-def load_model():
-    return pipeline("text-generation", model="tiiuae/falcon-7b-instruct", max_new_tokens=100)
+respuestas = {
+    "hola": ["¡Hola, amiguitos!", "¡Qué gusto verlos!", "¡Hola Valentina! ¡Hola Luca! 😊"],
+    "cómo estás": ["¡Estoy muy feliz! 😄", "¡Listo para jugar!", "¡Con ganas de cantar! 🎶"],
+    "cuéntame un chiste": ["¿Qué hace una abeja en el gimnasio? ¡Zum-ba!", "¿Por qué el tomate se puso rojo? ¡Porque vio al pepino sin ropa! 😆"],
+    "cuenta": ["1, 2, 3, 4... ¡muy bien!", "Vamos a contar juntos: uno, dos, tres... ¡súper!"],
+    "adiós": ["¡Hasta pronto! 👋", "¡Nos vemos luego!", "¡Un abrazo grande! 🧸"]
+}
 
-generator = load_model()
-
-user_input = st.text_input("Escríbeme algo:", "")
+user_input = st.text_input("Escríbeme algo:", "").lower()
 
 if user_input:
-    with st.spinner("Pensando..."):
-        response = generator(user_input, max_new_tokens=100)[0]["generated_text"]
-        st.write(response)
+    respuesta = "Hmm... no entiendo eso todavía 🤔"
+    for clave in respuestas:
+        if clave in user_input:
+            respuesta = random.choice(respuestas[clave])
+            break
+    st.write(respuesta)
