@@ -5,7 +5,7 @@ from gtts import gTTS
 import os
 
 # Inicializar modelo
-chatbot = pipeline("text-generation", model="distilgpt2")
+chatbot = pipeline("text-generation", model="gpt2")
 
 st.title("🤖 Amiguito Virtual")
 st.markdown("Escribe un mensaje y el amiguito responderá con voz.")
