@@ -1,11 +1,20 @@
 
 import streamlit as st
-from transformers import pipeline
 from gtts import gTTS
 import os
 
-# Inicializar modelo
-chatbot = pipeline("text-generation", model="gpt2")
+# Respuestas simples basadas en palabras clave
+def get_response(user_input):
+    respuestas = {
+        "hola": "¡Hola! ¿Cómo estás?",
+        "cómo te llamas": "Me llamo Amiguito Virtual. 😊",
+        "adiós": "¡Hasta pronto! 😄"
+    }
+    # Si encontramos una respuesta predefinida, la usamos
+    for key, value in respuestas.items():
+        if key in user_input.lower():
+            return value
+    return "No entiendo esa pregunta, ¿puedes decirme otra cosa?"
 
 st.title("🤖 Amiguito Virtual")
 st.markdown("Escribe un mensaje y el amiguito responderá con voz.")
@@ -13,7 +22,7 @@ st.markdown("Escribe un mensaje y el amiguito responderá con voz.")
 user_input = st.text_input("Tu mensaje:")
 
 if st.button("Enviar") and user_input:
-    respuesta = chatbot(user_input, max_length=60, num_return_sequences=1)[0]['generated_text']
+    respuesta = get_response(user_input)
     st.write("🧸 Amiguito dice:", respuesta)
 
     # Convertir texto a voz
