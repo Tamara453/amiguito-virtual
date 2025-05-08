@@ -9,16 +9,9 @@ import uuid
 import datetime
 
 
-import firebase_admin
-from firebase_admin import credentials, storage, firestore
 
-# Inicializar Firebase
-if not firebase_admin._apps:
-    cred = credentials.Certificate("serviceAccountKey.json")
-    firebase_admin.initialize_app(cred, {
-        'storageBucket': 'TU_BUCKET_NAME.appspot.com'  # ← Reemplaza esto
-    })
-    db = firestore.client()
+
+
 
 bucket = storage.bucket()
 
