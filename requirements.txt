@@ -1,9 +1,6 @@
 
 streamlit
-gtts
-streamlit-audio-recorder
-openai-whisper
+transformers
 torch
-firebase-admin
-
+gtts
 
