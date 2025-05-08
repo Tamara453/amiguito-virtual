@@ -39,8 +39,6 @@ if st.button("Enviar") and entrada:
     audio_file.close()
     os.remove("respuesta.mp3")
 
-# Mostrar historial
-for rol, texto in st.session_state.historial:
-    st.markdown(f"**{rol}:** {texto}")
+
 
 
