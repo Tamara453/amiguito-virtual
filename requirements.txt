@@ -1,6 +1,6 @@
 
-streamlit
-transformers
-torch
-gtts
+streamlit==1.45.0
+transformers==4.51.0
+gTTS==2.5.1
+
 
