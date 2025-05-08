@@ -1,44 +1,28 @@
 
-    import streamlit as st
+import streamlit as st
 from transformers import pipeline
 from gtts import gTTS
 import os
 
-# Configurar la interfaz
-st.set_page_config(page_title="Amiguito Virtual", page_icon="🤖", layout="centered")
-st.title("👶 Amiguito Virtual")
-st.markdown("Hola, soy tu amiguito virtual. ¡Pregúntame lo que quieras!")
-
-# Cargar modelo de lenguaje
+# Inicializar modelo
 chatbot = pipeline("text-generation", model="distilgpt2")
 
-# Función para generar respuesta
-def responder(mensaje):
-    respuesta = chatbot(mensaje, max_length=100, num_return_sequences=1)[0]["generated_text"]
-    return respuesta[len(mensaje):].strip()
+st.title("🤖 Amiguito Virtual")
+st.markdown("Escribe un mensaje y el amiguito responderá con voz.")
 
-# Historial de conversación
-if "historial" not in st.session_state:
-    st.session_state.historial = []
+user_input = st.text_input("Tu mensaje:")
 
-# Entrada de texto
-entrada = st.text_input("Escribe tu mensaje aquí:")
+if st.button("Enviar") and user_input:
+    respuesta = chatbot(user_input, max_length=60, num_return_sequences=1)[0]['generated_text']
+    st.write("🧸 Amiguito dice:", respuesta)
 
-if st.button("Enviar") and entrada:
-    respuesta = responder(entrada)
-
-    # Mostrar conversación
-    st.session_state.historial.append(("Tú", entrada))
-    st.session_state.historial.append(("Amiguito", respuesta))
-
-    # Crear y reproducir audio
-    tts = gTTS(text=respuesta, lang="es")
+    # Convertir texto a voz
+    tts = gTTS(text=respuesta, lang='es')
     tts.save("respuesta.mp3")
     audio_file = open("respuesta.mp3", "rb")
     st.audio(audio_file.read(), format="audio/mp3")
     audio_file.close()
     os.remove("respuesta.mp3")
-
 
 
 
