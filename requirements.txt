@@ -1,5 +1,6 @@
 
 streamlit
-gTTS
-playsound==1.2.2
+transformers
+torch
+gtts
 
