@@ -7,7 +7,7 @@ from io import BytesIO
 import os
 import uuid
 import datetime
-from streamlit_audio_recorder import audio_recorder
+
 import whisper
 import firebase_admin
 from firebase_admin import credentials, storage, firestore
